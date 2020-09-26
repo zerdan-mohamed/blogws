@@ -1,0 +1,103 @@
+* ** Why You Should Use Constructor Injection in Spring ? ** *
+
+Dependency injection is an approach to implement loose coupling among the classes in an application.
+      There are different ways of injecting dependencies, and the constructor injection
+      should be the preferred way.
+      Dependency injection helps in implementing inversion of control (IoC).
+
+# What is Dependency Injection?
+        ## Dependency: An object usually requires objects of other classes to perform its operations.
+           We call these objects dependencies.
+
+        ## Injection: The process of providing the required dependencies to an object.
+
+# We can implement dependency injection with:
+    ## constructor-based injection
+        In constructor-based injection, the dependencies required for the class are provided as arguments to the constructor :
+        _________________________________________________
+            @Component
+            class Cake {
+                private Flavor flavor;
+                private Bread breadType
+
+                Cake(Flavor flavor) {
+                    Objects.requireNonNull(flavor);
+                    this.flavor = flavor;
+                }
+
+                @Autowired
+                Cake(Flavor flavor, Bread breadType) {
+                    this.flavor = flavor;
+                    this.breadType = breadType;
+                }
+                ...
+            }
+        ______________________________________________
+
+
+    ## setter-based injection
+        In setter-based injection, we provide the required dependencies as field parameters to the class and the values are set
+        using the setter methods of the properties. We have to annotate the setter method with the @Autowired annotation.
+        _________________________________________________
+            @Component
+            class Cookie {
+                private Topping toppings;
+
+                @Autowired
+                void setTopping(Topping toppings) {
+                    this.toppings = toppings;
+                }
+
+                Topping getTopping() {
+                    return toppings;
+                }
+                ...
+            }
+        _________________________________________________
+
+
+    ## field-based injection
+        Important :field injection is not recommended spring boot
+        With field-based injection, Spring assigns the required dependencies directly to the fields on annotating with @Autowired annotation.
+        _________________________________________________
+            @Component
+            class IceCream {
+                @Autowired
+                private Topping toppings;
+
+                Topping getToppings() {
+                    return toppings;
+                }
+
+                void setToppings(Topping toppings) {
+                    this.toppings = toppings;
+                }
+            }
+        _________________________________________________
+
+
+So, Why Should I Use Constructor Injection ? : let’s go through some of the advantages of using constructor injection.
+    ## All Required Dependencies Are Available at Initialization Time
+        The IoC container makes sure that all the arguments provided in the constructor are available before passing them into the constructor.
+        This helps in preventing the infamous NullPointerException.
+
+    ## Identifying Code Smells
+        Constructor injection helps us to identify if our bean is dependent on too many other objects. If our constructor has a large number of
+        arguments this may be a sign that our class has too many responsibilities.
+
+    ## Preventing Errors in Tests
+        Constructor injection simplifies writing unit tests. The constructor forces us to provide valid objects for all dependencies.
+        Using mocking libraries like Mockito, we can create mock objects that we can then pass into the constructor.
+
+        We can also pass mocks via setters, of course, but if we add a new dependency to a class, we may forget to call the setter in the test,
+        potentially causing a NullPointerException in the test.
+
+        Constructor injection ensures that our test cases are executed only when all the dependencies are available.
+
+    ## Immutability
+        Constructor injection helps in creating immutable objects because a constructor’s signature is the only possible way to create
+        objects. Once we create a bean, we cannot alter its dependencies anymore. With setter injection, it’s possible to inject the
+        dependency after creation, thus leading to mutable objects which, among other things, may not be thread-safe in a multi-threaded
+        environment and are harder to debug due to their mutability.
+
+==> Constructor injection makes code more robust. It allows us to create immutable objects, preventing NullPointerExceptions and other errors.
