@@ -1,8 +1,8 @@
 package com.zm.blogws.controller;
 
+import com.zm.blogws.dto.LoginRequest;
 import com.zm.blogws.dto.RegisterRequest;
 import com.zm.blogws.service.AuthService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,5 +25,10 @@ public class AuthController {
         authService.signup(registerRequest);
 
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestBody LoginRequest loginRequest) {
+        return authService.login(loginRequest);
     }
 }
