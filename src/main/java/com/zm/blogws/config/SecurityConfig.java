@@ -1,7 +1,6 @@
 package com.zm.blogws.config;
 
-import com.zm.blogws.model.User;
-import com.zm.blogws.service.UserDetailsServiceImpl;
+import com.zm.blogws.security.jwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -22,6 +22,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public SecurityConfig(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
+    }
+
+    @Bean
+    public jwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new jwtAuthenticationFilter();
     }
 
     @Bean(BeanIds.AUTHENTICATION_MANAGER)
@@ -38,6 +43,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .anyRequest()
                 .authenticated();
+
+        httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Autowired
