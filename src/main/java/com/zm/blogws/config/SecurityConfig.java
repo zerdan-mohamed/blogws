@@ -1,6 +1,6 @@
 package com.zm.blogws.config;
 
-import com.zm.blogws.security.jwtAuthenticationFilter;
+import com.zm.blogws.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,8 +25,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public jwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new jwtAuthenticationFilter();
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter();
     }
 
     @Bean(BeanIds.AUTHENTICATION_MANAGER)

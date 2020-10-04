@@ -15,16 +15,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class jwtAuthenticationFilter extends OncePerRequestFilter {
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private JwtProvider jwtProvider;
 
     private UserDetailsService userDetailsService;
 
     @Autowired
-    public jwtAuthenticationFilter(JwtProvider jwtProvider, UserDetailsService userDetailsService) {
+    public JwtAuthenticationFilter(JwtProvider jwtProvider, UserDetailsService userDetailsService) {
         this.jwtProvider = jwtProvider;
         this.userDetailsService = userDetailsService;
+    }
+
+    public JwtAuthenticationFilter() {
+
     }
 
     @Override
